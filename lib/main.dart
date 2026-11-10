@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uts1_ulum/profil_page.dart';
 
 void main() {
   runApp(const MyApp());
