@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import '../models/profile.dart';
+import 'edit_profile_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,7 +13,29 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   int _selectedIndex = 0;
 
-  final Profile profile = Profile.initial();
+  late Profile profile;
+
+  @override
+  void initState() {
+    super.initState();
+    profile = Profile.initial();
+  }
+
+  // Fungsi untuk membuka halaman Edit Profil
+  Future<void> _editProfile() async {
+    final Profile? dataBaru = await Navigator.push<Profile>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfilePage(profile: profile),
+      ),
+    );
+
+    if (dataBaru != null) {
+      setState(() {
+        profile = dataBaru;
+      });
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -197,6 +220,15 @@ class _ProfilePageState extends State<ProfilePage> {
           _selectedIndex == 0 ? 'Profil Mahasiswa' : 'Kontak Saya',
         ),
         centerTitle: true,
+
+        // Tombol Edit Profil
+        actions: [
+          IconButton(
+            onPressed: _editProfile,
+            icon: const Icon(Icons.edit),
+            tooltip: 'Edit Profil',
+          ),
+        ],
       ),
 
       // Drawer
