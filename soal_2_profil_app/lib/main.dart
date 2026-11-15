@@ -54,7 +54,10 @@ class _MyAppState extends State<MyApp> {
 
       routes: {
         '/login': (context) => const LoginPage(),
-        '/profile': (context) => const ProfilePage(),
+        '/profile': (context) => ProfilePage(
+              onToggleTheme: toggleTheme,
+              isDarkMode: _themeMode == ThemeMode.dark,
+            ),
       },
     );
   }

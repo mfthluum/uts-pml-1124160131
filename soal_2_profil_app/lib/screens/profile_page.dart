@@ -2,9 +2,17 @@
 import 'package:flutter/material.dart';
 import '../models/profile.dart';
 import 'edit_profile_page.dart';
+import 'about_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final VoidCallback onToggleTheme;
+  final bool isDarkMode;
+
+  const ProfilePage({
+    super.key,
+    required this.onToggleTheme,
+    required this.isDarkMode,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -37,14 +45,16 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  // Fungsi navigasi halaman
   void _onItemTapped(int index) {
+    Navigator.pop(context);
+
     setState(() {
       _selectedIndex = index;
     });
-
-    Navigator.pop(context);
   }
 
+  // Kartu informasi kontak
   Widget buildContactCard({
     required IconData icon,
     required String title,
@@ -54,13 +64,18 @@ class _ProfilePageState extends State<ProfilePage> {
       elevation: 2,
       margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
-        leading: Icon(icon, color: Colors.green, size: 28),
+        leading: Icon(
+          icon,
+          color: Colors.green,
+          size: 28,
+        ),
         title: Text(title),
         subtitle: Text(value),
       ),
     );
   }
 
+  // Konten Profil Mahasiswa
   Widget buildProfileContent() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
@@ -91,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
           const SizedBox(height: 16),
 
-          // Identitas Mahasiswa
+          // Nama Lengkap
           Text(
             profile.nama,
             textAlign: TextAlign.center,
@@ -103,6 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
           const SizedBox(height: 8),
 
+          // NIM
           Text(
             profile.nim,
             style: TextStyle(
@@ -127,12 +143,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+
                   const Divider(height: 24),
+
                   ListTile(
                     leading: const Icon(Icons.school),
                     title: const Text('Program Studi'),
                     subtitle: Text(profile.programStudi),
                   ),
+
                   ListTile(
                     leading: const Icon(Icons.groups),
                     title: const Text('Kelas'),
@@ -160,7 +179,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+
                   const SizedBox(height: 12),
+
                   Text(
                     profile.bio,
                     textAlign: TextAlign.justify,
@@ -169,11 +190,15 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
+
+          const SizedBox(height: 16),
+
         ],
       ),
     );
   }
 
+  // Konten Informasi Kontak
   Widget buildContactContent() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
@@ -212,22 +237,65 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  // Menentukan konten berdasarkan halaman yang dipilih
+  Widget buildSelectedPage() {
+    switch (_selectedIndex) {
+      case 0:
+        return buildProfileContent();
+
+      case 1:
+        return buildContactContent();
+
+      case 2:
+        return const AboutPage();
+
+      default:
+        return buildProfileContent();
+    }
+  }
+
+  // Judul AppBar
+  String getPageTitle() {
+    switch (_selectedIndex) {
+      case 0:
+        return 'Profil Mahasiswa';
+      case 1:
+        return 'Kontak Saya';
+      case 2:
+        return 'Tentang Saya';
+      default:
+        return 'Profil Mahasiswa';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          _selectedIndex == 0 ? 'Profil Mahasiswa' : 'Kontak Saya',
-        ),
+        title: Text(getPageTitle()),
         centerTitle: true,
 
-        // Tombol Edit Profil
         actions: [
+          // Tombol Dark Mode dan Light Mode
           IconButton(
-            onPressed: _editProfile,
-            icon: const Icon(Icons.edit),
-            tooltip: 'Edit Profil',
+            onPressed: widget.onToggleTheme,
+            icon: Icon(
+              widget.isDarkMode
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
+            ),
+            tooltip: widget.isDarkMode
+                ? 'Aktifkan Light Mode'
+                : 'Aktifkan Dark Mode',
           ),
+
+          // Tombol Edit Profil hanya muncul di halaman Profil
+          if (_selectedIndex == 0)
+            IconButton(
+              onPressed: _editProfile,
+              icon: const Icon(Icons.edit),
+              tooltip: 'Edit Profil',
+            ),
         ],
       ),
 
@@ -240,6 +308,7 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: const BoxDecoration(
                 color: Color(0xFF176B5B),
               ),
+
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: ClipOval(
@@ -258,6 +327,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+
               accountName: Text(profile.nama),
               accountEmail: Text(profile.nim),
             ),
@@ -275,14 +345,19 @@ class _ProfilePageState extends State<ProfilePage> {
               selected: _selectedIndex == 1,
               onTap: () => _onItemTapped(1),
             ),
+
+            ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: const Text('Tentang Saya'),
+              selected: _selectedIndex == 2,
+              onTap: () => _onItemTapped(2),
+            ),
           ],
         ),
       ),
 
       // Konten Halaman
-      body: _selectedIndex == 0
-          ? buildProfileContent()
-          : buildContactContent(),
+      body: buildSelectedPage(),
 
       // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
@@ -300,6 +375,10 @@ class _ProfilePageState extends State<ProfilePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.contact_mail),
             label: 'Kontak',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info_outline),
+            label: 'About',
           ),
         ],
       ),
