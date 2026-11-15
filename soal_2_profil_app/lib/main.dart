@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'screens/login_page.dart';
+import 'screens/profile_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,6 +54,7 @@ class _MyAppState extends State<MyApp> {
 
       routes: {
         '/login': (context) => const LoginPage(),
+        '/profile': (context) => const ProfilePage(),
       },
     );
   }
