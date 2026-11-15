@@ -31,8 +31,8 @@ class Profile {
       kelas: 'TI24 P SE2',
       bio: 'Mahasiswa Teknik Informatika yang tertarik '
           'pada teknologi, pemrograman, dan pengembangan aplikasi.',
-      email: '',
-      nomorHp: '',
+      email: '1124160131@global.ac.id',
+      nomorHp: '085774823706',
       github: 'https://github.com/mfthluum',
       foto: 'assets/images/profile.png',
     );

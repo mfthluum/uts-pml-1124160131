@@ -5,6 +5,22 @@ import '../models/profile.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  Widget buildContactCard({
+    required IconData icon,
+    required String title,
+    required String value,
+  }) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 10),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.green, size: 28),
+        title: Text(title),
+        subtitle: Text(value.isEmpty ? 'Belum ditambahkan' : value),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Profile profile = Profile.initial();
@@ -43,7 +59,7 @@ class ProfilePage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // Nama Mahasiswa
+            // Identitas Mahasiswa
             Text(
               profile.nama,
               textAlign: TextAlign.center,
@@ -80,13 +96,11 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                     const Divider(height: 24),
-
                     ListTile(
                       leading: const Icon(Icons.school),
                       title: const Text('Program Studi'),
                       subtitle: Text(profile.programStudi),
                     ),
-
                     ListTile(
                       leading: const Icon(Icons.groups),
                       title: const Text('Kelas'),
@@ -118,7 +132,47 @@ class ProfilePage extends StatelessWidget {
                     Text(
                       profile.bio,
                       textAlign: TextAlign.justify,
-                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Informasi Kontak
+            Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Informasi Kontak',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    buildContactCard(
+                      icon: Icons.email,
+                      title: 'Email',
+                      value: profile.email,
+                    ),
+
+                    buildContactCard(
+                      icon: Icons.phone,
+                      title: 'Nomor HP',
+                      value: profile.nomorHp,
+                    ),
+
+                    buildContactCard(
+                      icon: Icons.code,
+                      title: 'GitHub',
+                      value: profile.github,
                     ),
                   ],
                 ),
