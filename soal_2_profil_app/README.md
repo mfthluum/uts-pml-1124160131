@@ -18,7 +18,7 @@ Aplikasi ini menyediakan fitur login, menampilkan informasi profil mahasiswa, me
 
 Video demonstrasi dan penjelasan kode aplikasi dapat dilihat melalui YouTube:
 
-[**Tonton Video Dokumentasi UTS PML**](https://youtu.be/HHLpr5KDDDc)
+[**Tonton Video Dokumentasi UTS PML**](https://youtu.be/PkUZ2nmimq0)
 
 ## Fitur Aplikasi
 
